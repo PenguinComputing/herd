@@ -526,7 +526,33 @@ silkscreen_t  sunfirex4440[] = {
   { NULL, NULL, NULL, NULL, -1, -1  },
 };
 
+/* cpu = HT node, dimm = (CS & ~1) + DCT */
+/* Penguin Computing Altus 1800 */ 
+/* fru             dmi     locator                          */
+/* ipmi_tag       bank      dimm       silkscreen  cpu dimm */
+silkscreen_t  PenguinAltus1800[] = {
+  { "-",        "BANK1",  "P1_DIMM1A", "P1_DIMM1A", 0, 2 },
+  { "-",        "BANK0",  "P1_DIMM1B", "P1_DIMM1B", 0, 0 },
+  { "-",        "BANK3",  "P1_DIMM2A", "P1_DIMM2A", 0, 3 },
+  { "-",        "BANK2",  "P1_DIMM2B", "P1_DIMM2B", 0, 1 },
+  { "-",        "BANK5",  "P1_DIMM3A", "P1_DIMM3A", 1, 2 },
+  { "-",        "BANK4",  "P1_DIMM3B", "P1_DIMM3B", 1, 0 },
+  { "-",        "BANK7",  "P1_DIMM4A", "P1_DIMM4A", 1, 3 },
+  { "-",        "BANK6",  "P1_DIMM4B", "P1_DIMM4B", 1, 1 },
+  { "-",        "BANK9",  "P2_DIMM1A", "P2_DIMM1A", 3, 2 },
+  { "-",        "BANK8",  "P2_DIMM1B", "P2_DIMM1B", 3, 0 },
+  { "-",        "BANK11", "P2_DIMM2A", "P2_DIMM2A", 3, 3 },
+  { "-",        "BANK10", "P2_DIMM2B", "P2_DIMM2B", 3, 1 },
+  { "-",        "BANK13", "P2_DIMM3A", "P2_DIMM3A", 2, 2 },
+  { "-",        "BANK12", "P2_DIMM3B", "P2_DIMM3B", 2, 0 },
+  { "-",        "BANK15", "P2_DIMM4A", "P2_DIMM4A", 2, 3 },
+  { "-",        "BANK14", "P2_DIMM4B", "P2_DIMM4B", 2, 1 },
+  { NULL,       NULL, NULL, NULL, -1, -1  },
+};
+
+
 map_t maps[] = {
+  /* platform, alias, fru_lu1, fru_lu2, fru_lu3, dmi_lu1, dmi_lu2, silkscreen map, oname */
   { "sunfirev40z", "v40", "cpu", "mem", "vpd", "CPU", "DIMM", sunfirev40z, "stinger4" },
   { "sunfirev20z", "v20", "cpu", "mem", "vpd", "CPU", "DIMM", sunfirev20z, "stinger2" },
   { "sunfirex4600m2", "x4600m2", ".d", "p", "fru", "BANK", "DIMM", sunfirex4600m2, "galaxy4f" },
@@ -547,6 +573,7 @@ map_t maps[] = {
   { "w1100z_2100z", "w1100z/2100z", ".d", "p", "fru", "BANK", "DIMM", W1100z_2100z, "Metropolis" },
   { "x2100m2", "x2100m2", ".d", "p", "fru", "BANK", "DIMM", x2100m2, "Taurus" },
   { "sunfirex2200m2", "x2200m2", "cpu", "mem", "vpd", "CPU", "DIMM", sunfirex2200m2, "taurus" },
+  { "h8dgu", "altus1800,altus2800,h8dgu", ".d", "p", "fru", "BANK", "DIMM", PenguinAltus1800, "H8DGU" },
   { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL },
 };
 
@@ -589,7 +616,7 @@ update_map()
 	    for (i = 0; maps[i].platform != NULL; i++) {
 		if (verbose)
 		    printf("platform alias = %s\n", maps[i].alias);
-		if (strstr(platform, maps[i].alias)) {
+		if (strstr(maps[i].alias, platform)) {
 		    if (verbose) 
 			printf("found alias = %s in name=%s, i=%d\n",
 		            maps[i].alias, platform, i);
