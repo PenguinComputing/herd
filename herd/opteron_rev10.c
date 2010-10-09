@@ -384,7 +384,6 @@ int orev10_translate(decode_input_t* dinput, decode_result_t* result)
 
 	} else {
 	    result->is_dimm_pair = 1;
-	    result->dimm = (result->dimm * 2);
 	}
     } else {
 	// Unganged mode, 64-bit interface

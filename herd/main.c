@@ -76,8 +76,8 @@ int main(int argc, char** argv)
 		silkscreen1 = dimm_map(result.node, result.dimm * 2);
 		silkscreen2 = dimm_map(result.node, (result.dimm * 2) + 1);
 		if (silkscreen1 && silkscreen2) {
-		    printf("Cpu Node %d, CS %d (\"%s\" and \"%s\")\n",
-			   result.node, result.dimm * 2,
+		    printf("Cpu Node %d, DIMM pair %d (\"%s\" and \"%s\")\n",
+			   result.node, result.dimm,
 			   silkscreen1, silkscreen2);
 		} else {
 		    printf("Cpu Node %d, DIMM pair %d (DIMMs %d and %d)\n",
@@ -87,7 +87,7 @@ int main(int argc, char** argv)
 	    } else {
 		const char* silkscreen = dimm_map(result.node, result.dimm);
 		if (silkscreen) {
-		    printf("Cpu Node %d, CS %d (\"%s\")", result.node, result.dimm,
+		    printf("Cpu Node %d, DIMM %d (\"%s\")", result.node, result.dimm,
 			   silkscreen);
 		} else {
 		    printf("Cpu Node %d, DIMM %d", result.node, result.dimm);
