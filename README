@@ -2,27 +2,25 @@ WHAT IS HERD
 ------------
 
 This is herd (Hardware Error Report and Decode), a correctable
-hardware errors monitoring tool for Sun Microsystem Opteron-based Sun
-Fire servers. Herd monitors your hardware for various correctable
-errors (such as correctable Machine Check Exceptions or MCEs) and
-report them both to the system log and to the system Service Processor
-(SP) through the system IPMI interface.
+hardware errors monitoring tool for Sun Microsystem and Penguin
+Computing Opteron-based servers. Herd monitors your hardware for
+various correctable errors (such as correctable Machine Check
+Exceptions or MCEs) and report them both to the system log and to
+the system Service Processor (SP) through the system IPMI interface.
 
 Herd is also meant as a replacement to the mcelog utility and is
 backward compatible with its syslog reporting format.
 
 
-BUILDING FROM SVN TREE
-----------------------
+REGENERATE autotools FILES
+--------------------------
 
-- run the script 'autogen.sh' to generate the autotools files.
+Not usually necessary, but if need be, run the script 'autogen.sh'
+to generate the autotools files.
 
-- run 'configure'
 
-- run 'make'
-
-BUILDING FROM A TARBALL
------------------------
+BUILDING FROM GIT OR A TARBALL
+------------------------------
 
 Simply run 'configure', then 'make'.
 
@@ -30,7 +28,8 @@ Simply run 'configure', then 'make'.
 WHAT'S IN THIS TARBALL
 ----------------------
 
-Because the Sun Fire Service Processor software (ILOM) uses an IPMIv2
-interface to communicate with the host system, herd needs to work with
-the OpenIPMI library version >= 2. This tarball contains its own copy
-of the low-level libraries of OpenIPMI 2.0.7.
+Because the Sun Fire Service Processor software (ILOM) and Penguin
+Computing BMCs use an IPMIv2 interface to communicate with the host
+system, herd needs to work with the OpenIPMI library version >= 2.
+This tarball contains its own copy of the low-level libraries of
+OpenIPMI 2.0.7.
