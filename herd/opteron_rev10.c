@@ -100,8 +100,8 @@ void orev10_show_config(void)
 			    i, base & 0xfffffff0, mask,
 			    ((base & 0x01) ? " (ENABLED)" : ""),
 			    ((base & 0x02) ? " (SPARE RANK)" : ""),
-			    ((base & 0x03) ? " (TEST FAIL)" : ""),
-			    ((base & 0x04) ? " (ON-DIMM MIRRORING)" : ""));
+			    ((base & 0x04) ? " (TEST FAIL)" : ""),
+			    ((base & 0x08) ? " (ON-DIMM MIRRORING)" : ""));
 		}
 	    } else {
 		// Unganged
