@@ -590,6 +590,29 @@ silkscreen_t  PenguinAltus2804[] = {
   { NULL,       NULL, NULL, NULL, -1, -1  },
 };
 
+/* Penguin Computing Tempest 4200 */ 
+/* fru             dmi     locator                          */
+/* ipmi_tag       bank      dimm       silkscreen  cpu dimm */
+silkscreen_t  PenguinTempest4200[] = {
+  { "-",        "BANK0",  "DIMM_A1", "DIMM_A1", 0, 0 },
+  { "-",        "BANK1",  "DIMM_A2", "DIMM_A2", 0, 2 },
+  { "-",        "BANK2",  "DIMM_B1", "DIMM_B1", 0, 1 },
+  { "-",        "BANK3",  "DIMM_B2", "DIMM_B2", 0, 3 },
+  { "-",        "BANK4",  "DIMM_C1", "DIMM_C1", 1, 0 },
+  { "-",        "BANK5",  "DIMM_C2", "DIMM_C2", 1, 2 },
+  { "-",        "BANK6",  "DIMM_D1", "DIMM_D1", 1, 1 },
+  { "-",        "BANK7",  "DIMM_D2", "DIMM_D2", 1, 3 },
+  { "-",        "BANK8",  "DIMM_E1", "DIMM_E1", 3, 0 },
+  { "-",        "BANK9",  "DIMM_E2", "DIMM_E2", 3, 2 },
+  { "-",        "BANK10", "DIMM_F1", "DIMM_F1", 3, 1 },
+  { "-",        "BANK11", "DIMM_F2", "DIMM_F2", 3, 3 },
+  { "-",        "BANK12", "DIMM_G1", "DIMM_G1", 2, 0 },
+  { "-",        "BANK13", "DIMM_G2", "DIMM_G2", 2, 2 },
+  { "-",        "BANK14", "DIMM_H1", "DIMM_H1", 2, 1 },
+  { "-",        "BANK15", "DIMM_H2", "DIMM_H2", 2, 3 },
+  { NULL,       NULL, NULL, NULL, -1, -1  },
+};
+
 
 map_t maps[] = {
   /* platform, alias, fru_lu1, fru_lu2, fru_lu3, dmi_lu1, dmi_lu2, silkscreen map, oname */
@@ -615,6 +638,7 @@ map_t maps[] = {
   { "sunfirex2200m2", "x2200m2", "cpu", "mem", "vpd", "CPU", "DIMM", sunfirex2200m2, "taurus" },
   { "h8dgu", "altus1800,altus2800,h8dgu", ".d", "p", "fru", "BANK", "DIMM", PenguinAltus1800, "H8DGU" },
   { "h8qg6", "altus1804,altus2804,h8qgi,h8qg6", ".d", "p", "fru", "BANK", "DIMM", PenguinAltus2804, "H8QG6" },
+  { "kgpe-d16", "tempest4200,kgpe-d16", ".d", "p", "fru", "BANK", "DIMM", PenguinTempest4200, "KGPE-D16" },
   { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL },
 };
 
