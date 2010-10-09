@@ -1,0 +1,98 @@
+#!/bin/bash
+#
+# Init file for herd daemon
+#
+# chkconfig: - 95 05
+# description: herd IPMI MCE daemon
+#
+# processname: herd
+
+# source function library
+. /etc/rc.d/init.d/functions
+
+RETVAL=0
+PROG="herd"
+HERD=/usr/sbin/herd
+IPMILOCKFILE=/var/lock/subsys/ipmi
+HERDLOCKFILE=/var/lock/subsys/herd
+EDACMODULE="k8_edac"
+
+unload_module()
+{
+	for m in $@; do
+		/sbin/rmmod $m >/dev/null 2>&1
+	done
+}
+
+start()
+{
+	if [ ! -f $IPMILOCKFILE ]; then
+	    service ipmi start
+	fi
+	unload_module $EDACMODULE
+	echo -n $"Starting $PROG: "
+	$HERD $OPTIONS && success || failure
+	RETVAL=$?
+	[ "$RETVAL" = 0 ] && touch $HERDLOCKFILE
+	echo
+}
+
+stop()
+{
+	echo -n $"Stopping $PROG: "
+	if [ -n "`pidofproc $HERD`" ] ; then
+	    killproc $HERD -TERM
+	else
+	    failure $"Stopping $PROG"
+	fi
+	RETVAL=$?
+	[ "$RETVAL" = 0 ] && rm -f $HERDLOCKFILE
+	echo
+}
+
+reload()
+{
+	echo -n $"Reloading $PROG: "
+	if [ -n "`pidofproc $HERD`" ] ; then
+	    killproc $HERD -HUP
+	else
+	    failure $"Reloading $PROG"
+	fi
+	RETVAL=$?
+	echo
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart)
+		stop
+		start
+		;;
+	reload)
+		reload
+		;;
+	condrestart)
+		if [ -f $HERDLOCKFILE ] ; then
+			do_restart_sanity_check
+			if [ "$RETVAL" = 0 ] ; then
+				stop
+				# avoid race
+				sleep 3
+				start
+			fi
+		fi
+		;;
+	status)
+		status $HERD
+		RETVAL=$?
+		;;
+	*)
+		echo $"Usage: $0 {start|stop|restart|reload|condrestart|status}"
+		RETVAL=1
+esac
+exit $RETVAL

@@ -1,0 +1,75 @@
+.TH HERD 1 "Dec 19th 2006" "Denis Leroy"
+.SH NAME
+herd - monitor, decode and report hardware errors
+
+.SH SYNOPSIS
+.B herd
+[\fIoptions \fR]
+
+.SH DESCRIPTION
+Herd (Hardware Error Report and Decode) is a correctable hardware
+errors (also known as Machine Check Exceptions or MCEs) monitoring,
+decoding and reporting tool.
+
+Linux x86_64 kernels since 2.6.4 do not print recoverable MCEs to the
+kernel log. Instead they are saved into a special kernel buffer
+accessible using
+.I /dev/mcelog.
+
+Herd monitors and collects data from /dev/mcelog and report the
+corresponding errors to the system log and, if available, to the
+system Service Processor (SP) Event Log through the local IPMI interface.
+
+Herd is designed to be backward compatible with the mcelog utility. It
+supports the same command-line options and uses the same format to
+report errors to the system log. As such, herd acts as a replacement
+to mcelog (both cannot be used at the same time).
+
+During error decoding, herd attempts to provide as much information as
+possible from the data supplied by the CPU. In particular, physical
+addresses obtain from correctable ECC memory errors are matched to the
+corresponding CPU slot and DIMM number.
+
+.SH OPTIONS
+.TP
+.B \-D,  \--nodaemon
+No daemon mode. By default, herd immediately detaches itself as a daemon process. Use this option to prevent this behavior.
+.TP
+.B \-d, \--debug
+Debug mode.
+.TP
+.B \-h, \--help
+Show usage information.
+.TP
+.B \-i, \--ignorenodev
+Silent exit if /dev/mcelog device file is not found.
+.TP
+.B \-f, \--filter
+Filter out known bogus MCEs.
+.TP
+.B \-m, \--dmi
+Lookup MCE address in BIOS tables. Not currently supported.
+.TP
+.B \-e, \--decode <addr>{:<syndrome>}
+Quick Decode utility. Print the CPU,DIMM pair associated with the given 64-bit hex system address and optional syndrome value, then exit.
+.TP
+.B \-s, \--single
+Run a single check/report iteration then exit.
+.TP
+.B \--params
+Display herd parameters information.
+.TP
+.B \--setparam <key>=<value>
+Set or override a parameter value.
+
+.SH "SEE ALSO"
+\fImcelog\fR(8)
+.P
+http://www.sun.com/
+.PP
+.PP
+
+.SH AUTHOR
+.B herd
+was written by Denis Leroy <denis.leroy@sun.com>
+.P

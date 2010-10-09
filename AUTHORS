@@ -1,0 +1,7 @@
+Herd daemon :
+o Denis Leroy <denis.leroy@sun.com>
+o Michael Chew <michael.chew@sun.com>
+
+Herd is designed to be backward compatible with the mcelog utility and
+although no code was copy/pasted directly from mcelog, the reporting
+code is still heavily influenced by it. mcelog was written by Andy Klein.

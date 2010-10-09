@@ -1,0 +1,88 @@
+Summary:	A MCE correctable errors IPMI monitor
+Name:		herd
+Version:	@PACKAGE_VERSION@
+Release:	1.sl10
+License:	GPL
+Group:		Applications/Systems
+Source0:	%{name}-%{version}.tar.bz2
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+Obsoletes:	mcelog
+
+BuildRequires:	gcc make glibc-devel
+
+Requires:	OpenIPMI
+
+Requires(post):  /sbin/chkconfig
+Requires(preun): /sbin/chkconfig
+Requires(preun): /sbin/service
+
+%description
+herd (Hardware Error Report and Decode) is a correctable Machine Check
+Exception monitoring daemon meant as a replacement to mcelog. On top
+of reporting errors to syslog, herd also reports errors to the Service
+Processor through the local IPMI interface.
+
+
+%prep
+%setup -q
+
+
+%build
+%configure --disable-static
+make %{?_smp_mflags}
+
+
+%install
+rm -rf $RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
+
+find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
+find $RPM_BUILD_ROOT -type l -name "*.so" -exec rm -f {} ';'
+
+mkdir -p $RPM_BUILD_ROOT%{sysconfdir}/init.d
+%{__install} -D -m 755 packaging/herd.init.sles10 $RPM_BUILD_ROOT%{_sysconfdir}/init.d/herd
+
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/modprobe.d/
+cat > $RPM_BUILD_ROOT%{_sysconfdir}/modprobe.d/herd.conf <<EOF
+install k8_edac /bin/true
+EOF
+
+
+%post
+/sbin/chkconfig -add herd
+
+
+%preun
+if [ $1 = 0 ]; then
+    /sbin/service herd stop > /dev/null 2>&1 || :
+    /sbin/chkconfig -del herd
+fi
+
+
+%postun
+if [ "$1" -ge "1" ]; then
+    /sbin/service herd condrestart > /dev/null 2>&1 || :
+fi
+
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+
+%files
+%defattr(-,root,root,-)
+%doc README COPYING
+%config %{_sysconfdir}/init.d/herd
+%config %{_sysconfdir}/modprobe.d/herd.conf
+%{_sbindir}/herd
+%{_mandir}/man1/%{name}.*
+
+
+%changelog
+* Wed Jun 17 2009 Denis Leroy <denis.leroy@sun.com> - 3.0-1.sl10
+- Added modprobe edac fix
+
+* Mon Sep 25 2006 Denis Leroy <denis.leroy@sun.com> - 1.0-1.sl10
+- Initial build.
+

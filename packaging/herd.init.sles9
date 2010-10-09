@@ -1,0 +1,76 @@
+#!/bin/bash
+#
+# Init file for herd daemon
+#
+# chkconfig: - 95 05
+# description: IPMI MCE daemon
+#
+# processname: herd
+# pidfile: /var/run/herd.pid
+
+# source function library
+. /etc/rc.status
+
+RETVAL=0
+PROG="herd"
+IPMID=/usr/sbin/herd
+IPMILOCKFILE=/var/lock/subsys/ipmi
+
+start()
+{
+	if [ ! -f $IPMILOCKFILE ]; then
+	    /etc/init.d/ipmi start
+	fi
+	echo -n $"Starting $PROG: "
+	startproc -f $IPMID
+	rc_status -v
+}
+
+stop()
+{
+	echo -n $"Stopping $PROG: "
+	killproc $IPMID -TERM
+	rc_status -v
+}
+
+reload()
+{
+	echo -n $"Reloading $PROG: "
+	killproc $IPMID -HUP
+	rc_status -v
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart)
+		stop
+		start
+		;;
+	reload)
+		reload
+		;;
+	condrestart)
+		if [ -f /var/lock/subsys/herd ] ; then
+			do_restart_sanity_check
+			if [ "$RETVAL" = 0 ] ; then
+				stop
+				# avoid race
+				sleep 3
+				start
+			fi
+		fi
+		;;
+	status)
+		checkproc $IPMID
+		rc_status -v
+		;;
+	*)
+		echo $"Usage: $0 {start|stop|restart|reload|condrestart|status}"
+		RETVAL=1
+esac
+exit $RETVAL
