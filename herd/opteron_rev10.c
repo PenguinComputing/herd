@@ -95,7 +95,7 @@ void orev10_show_config(void)
 	    if (ganged) {
 		for (i = 0; i < 8; i++) {
 		    u32 base = pci_read_config(0, 24 + node, 2, 0x40 + (i * 4));
-		    u32 mask = pci_read_config(0, 24 + node, 2, 0x60 + (i * 4));
+		    u32 mask = pci_read_config(0, 24 + node, 2, 0x60 + ((i>>1) * 4));
 		    log_msg("Cs%d: base=%08x  mask=%08x%s%s%s%s\n",
 			    i, base & 0xfffffff0, mask,
 			    ((base & 0x01) ? " (ENABLED)" : ""),
@@ -107,9 +107,9 @@ void orev10_show_config(void)
 		// Unganged
 		for (i = 0; i < 8; i++) {
 		    u32 dct0base = pci_read_config(0, 24 + node, 2, 0x40 + (i * 4));
-		    u32 dct0mask = pci_read_config(0, 24 + node, 2, 0x60 + (i * 4));
+		    u32 dct0mask = pci_read_config(0, 24 + node, 2, 0x60 + ((i>>1) * 4));
 		    u32 dct1base = pci_read_config(0, 24 + node, 2, 0x140 + (i * 4));
-		    u32 dct1mask = pci_read_config(0, 24 + node, 2, 0x160 + (i * 4));
+		    u32 dct1mask = pci_read_config(0, 24 + node, 2, 0x160 + ((i>>1) * 4));
 		    log_msg("CS%d: %08x:%08x (%c%c%c%c) %08x:%08x (%c%c%c%c)\n", i,
 			    dct0base & 0xfffffff0, dct0mask,
 			    (dct0base & 0x01 ? 'E' : ' '),
