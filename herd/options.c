@@ -138,7 +138,7 @@ void options_process(int argc, char** argv)
 	
     int opt;
 
-    while ((opt = getopt_long(argc, argv, "Ddhe:t:8:s:f",
+    while ((opt = getopt_long(argc, argv, "Ddhe:t:sf",
 			      long_options, &optind)) != -1) {
 	switch (opt) {
 	case 'D':
